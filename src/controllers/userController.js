@@ -1,12 +1,12 @@
 const userService = require('../services/userService');
 
 exports.register = async (req, res) => {
-  const { nome_completo, email, password, nDni, data_nascimento, sexo, aceita_termos } = req.body;
-  if (!nome_completo || !email || !password || !nDni || !data_nascimento || !sexo || aceita_termos !== true) {
+  const { nome_completo, email, password, ndni, data_nascimento, sexo, aceita_termos } = req.body;
+  if (!nome_completo || !email || !password || !ndni || !data_nascimento || !sexo || aceita_termos !== true) {
     return res.status(400).json({ error: 'Todos os campos são obrigatórios e termos devem ser aceitos.' });
   }
   try {
-    const result = await userService.registerUser({ nome_completo, email, password, nDni, data_nascimento, sexo, aceita_termos });
+    const result = await userService.registerUser({ nome_completo, email, password, ndni, data_nascimento, sexo, aceita_termos });
     res.status(201).json(result);
   } catch (err) {
     console.error('Erro no registro:', err);

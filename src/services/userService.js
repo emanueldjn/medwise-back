@@ -2,17 +2,17 @@
 const bcrypt = require('bcrypt');
 const pool = require('../utils/db');
 
-async function registerUser({ nome_completo, email, password, nDni, data_nascimento, sexo, aceita_termos }) {
-  // Verifica se email ou nDni já existem
-  const existing = await pool.query('SELECT * FROM users WHERE email = $1 OR nDni = $2', [email, nDni]);
+async function registerUser({ nome_completo, email, password, ndni, data_nascimento, sexo, aceita_termos }) {
+  // Verifica se email ou ndni já existem
+  const existing = await pool.query('SELECT * FROM users WHERE email = $1 OR ndni = $2', [email, ndni]);
   if (existing.rows.length > 0) {
     throw new Error('Email ou DNI já cadastrado.');
   }
   const hashedPassword = await bcrypt.hash(password, 10);
   await pool.query(
-    `INSERT INTO users (nome_completo, email, password, nDni, data_nascimento, sexo, aceita_termos)
+    `INSERT INTO users (nome_completo, email, password, ndni, data_nascimento, sexo, aceita_termos)
      VALUES ($1, $2, $3, $4, $5, $6, $7)`,
-    [nome_completo, email, hashedPassword, nDni, data_nascimento, sexo, aceita_termos]
+    [nome_completo, email, hashedPassword, ndni, data_nascimento, sexo, aceita_termos]
   );
   return { message: 'Usuário registrado com sucesso.' };
 }
