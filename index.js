@@ -18,4 +18,16 @@ app.options('*', cors(corsOptions)); // trata todas as requisições OPTIONS
 
 app.use(express.json());
 
-// ...rotas e restante do código...
+// Rotas de usuário
+const userRoutes = require('./src/routes/userRoutes');
+app.use('/api', userRoutes);
+
+// Rota de teste
+app.get('/', (req, res) => {
+    res.send('Hello world ok');
+});
+
+// Inicia servidor
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+});
