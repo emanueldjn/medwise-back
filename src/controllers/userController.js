@@ -9,6 +9,7 @@ exports.register = async (req, res) => {
     const result = await userService.registerUser({ nome_completo, email, password, nDni, data_nascimento, sexo, aceita_termos });
     res.status(201).json(result);
   } catch (err) {
+    console.error('Erro no registro:', err);
     res.status(400).json({ error: err.message });
   }
 };
@@ -19,6 +20,7 @@ exports.login = async (req, res) => {
     const result = await userService.loginUser(email, password);
     res.json(result);
   } catch (err) {
+    console.error('Erro no login:', err);
     res.status(400).json({ error: err.message });
   }
 };
@@ -29,6 +31,7 @@ exports.delete = async (req, res) => {
     const result = await userService.deleteUser(email);
     res.json(result);
   } catch (err) {
+    console.error('Erro ao apagar usuário:', err);
     res.status(400).json({ error: err.message });
   }
 };
