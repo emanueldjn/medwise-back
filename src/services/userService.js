@@ -1,5 +1,7 @@
 const bcrypt = require('bcrypt');
 const pool = require('../utils/db');
+const jwt = require('jsonwebtoken');
+const SECRET = process.env.JWT_SECRET || 'medwise_secret';
 
 async function registerUser({ nome_completo, email, password, ndni, data_nascimento, sexo, aceita_termos }) {
   const existing = await pool.query('SELECT * FROM users WHERE email = $1 OR ndni = $2', [email, ndni]);
@@ -33,7 +35,9 @@ async function loginUser(email, password) {
   const valid = await bcrypt.compare(password, user.password);
   if (!valid) throw new Error('Senha incorreta.');
 
-  return { message: 'Login realizado com sucesso.' };
+  // Gera o token JWT
+  const token = jwt.sign({ id: user.id, email: user.email }, SECRET, { expiresIn: '7d' });
+  return { message: 'Login realizado com sucesso.', token };
 }
 
 async function deleteUser(email) {
