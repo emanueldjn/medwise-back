@@ -9,6 +9,9 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
+// Rotas de usuário
+app.use('/api', userRoutes);
+
 // rota simples de teste
 app.get('/', (req, res) => {
   res.send('🚀 API rodando com sucesso!');
