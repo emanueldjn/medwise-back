@@ -1,5 +1,6 @@
 const userService = require('../services/userService');
 
+
 exports.register = async (req, res) => {
   const { nome_completo, email, password, ndni, data_nascimento, sexo, aceita_termos } = req.body;
   if (!nome_completo || !email || !password || !ndni || !data_nascimento || !sexo || aceita_termos !== true) {
@@ -10,6 +11,22 @@ exports.register = async (req, res) => {
     res.status(201).json(result);
   } catch (err) {
     console.error('Erro no registro:', err);
+    res.status(400).json({ error: err.message });
+  }
+};
+
+exports.updateUser = async (req, res) => {
+  const { nome_completo, email, biografia } = req.body;
+  const id = req.params.id;
+  let foto_perfil = null;
+  if (req.file) {
+    foto_perfil = req.file.path.replace(/\\/g, '/');
+  }
+  try {
+    await userService.updateUser({ id, nome_completo, email, biografia, foto_perfil });
+    res.json({ message: 'Perfil atualizado com sucesso.', foto_perfil });
+  } catch (err) {
+    console.error('Erro ao atualizar perfil:', err);
     res.status(400).json({ error: err.message });
   }
 };
