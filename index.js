@@ -4,7 +4,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 const { createTables } = require('./createTables');
-createTables();
+createTables().catch(console.error);
 
 const corsOptions = {
     origin: 'https://medwise-front.vercel.app',
@@ -14,20 +14,16 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions)); // trata todas as requisições OPTIONS
-
+app.options('*', cors(corsOptions));
 app.use(express.json());
 
-// Rotas de usuário
 const userRoutes = require('./src/routes/userRoutes');
 app.use('/api', userRoutes);
 
-// Rota de teste
 app.get('/', (req, res) => {
     res.send('Hello world ok');
 });
 
-// Inicia servidor
 app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+    console.log(`Server running on port ${port}`);
 });
