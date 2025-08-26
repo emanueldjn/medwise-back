@@ -1,38 +1,22 @@
-const express = require("express");
-const cors = require("cors");
+const express = require('express');
+const cors = require('cors');
 const { createTables } = require('./createTables');
-
-const userRoutes = require('./src/routes/userRoutes');
+require('dotenv').config();
 
 const app = express();
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
-// Configura CORS
-const corsOptions = {
-    origin: 'https://medwise-front.vercel.app',
-    credentials: true,
-    methods: ['GET','POST','PUT','DELETE','OPTIONS'],
-    allowedHeaders: ['Content-Type','Authorization']
-};
-
-app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 
-// Rotas
-app.use('/api', userRoutes);
+// rota simples de teste
+app.get('/', (req, res) => {
+  res.send('🚀 API rodando com sucesso!');
+});
 
-// Rota teste
-app.get('/', (req, res) => res.send('Server is running'));
+// cria tabelas no start
+createTables();
 
-// Cria tabelas antes de subir o servidor
-createTables()
-  .then(() => {
-    app.listen(port, () => {
-      console.log(`Server running on port ${port}`);
-    });
-  })
-  .catch(err => {
-    console.error('Erro ao criar tabelas:', err);
-    process.exit(1);
-  });
+app.listen(PORT, () => {
+  console.log(`✅ Servidor rodando na porta ${PORT}`);
+});
