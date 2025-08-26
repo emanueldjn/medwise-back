@@ -45,12 +45,13 @@ async function loginUser(email, password) {
   return {
     message: 'Login realizado com sucesso.',
     token,
+    id: user.id,
     nome_completo: user.nome_completo,
     email: user.email,
     ndni: user.ndni,
     data_nascimento: user.data_nascimento,
     sexo: user.sexo,
-    foto_perfil: user.foto_perfil
+    aceita_termos: user.aceita_termos
   };
 }
 
