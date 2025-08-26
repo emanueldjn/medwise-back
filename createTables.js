@@ -28,6 +28,4 @@ async function createTables() {
   console.log('Tabelas criadas ou já existentes!');
 }
 
-// createTables().catch(console.error);
-
 module.exports = { createTables };
