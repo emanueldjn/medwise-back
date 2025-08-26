@@ -37,7 +37,11 @@ async function loginUser(email, password) {
 
   // Gera o token JWT
   const token = jwt.sign({ id: user.id, email: user.email }, SECRET, { expiresIn: '7d' });
-  return { message: 'Login realizado com sucesso.', token };
+  return {
+    message: 'Login realizado com sucesso.',
+    token,
+    nome_completo: user.nome_completo
+  };
 }
 
 async function deleteUser(email) {
