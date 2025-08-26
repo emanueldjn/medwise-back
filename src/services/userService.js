@@ -3,7 +3,16 @@ const pool = require('../utils/db');
 
 async function registerUser({ nome_completo, email, password, ndni, data_nascimento, sexo, aceita_termos }) {
   const existing = await pool.query('SELECT * FROM users WHERE email = $1 OR ndni = $2', [email, ndni]);
-  if (existing.rows.length > 0) throw new Error('Email ou DNI já cadastrado.');
+    // Verifica se email já existe
+    const emailExists = await pool.query('SELECT 1 FROM users WHERE email = $1', [email]);
+    if (emailExists.rows.length > 0) {
+      throw new Error('Email já cadastrado.');
+    }
+    // Verifica se ndni já existe
+    const ndniExists = await pool.query('SELECT 1 FROM users WHERE ndni = $1', [ndni]);
+    if (ndniExists.rows.length > 0) {
+      throw new Error('DNI já cadastrado.');
+    }
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
